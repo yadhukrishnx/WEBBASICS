@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contributors - yadhukrishnx/MCA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+        }
+        .contributors-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .contributor {
+            width: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .contributor img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+        .contributor-name {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .contributor-name a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .contributor-name a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Contributors to yadhukrishnx/MCA</h1>
+<div id="contributors" class="contributors-container"></div>
+
+<script>
+    const repoOwner = "yadhukrishnx";
+    const repoName = "MCA";
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`;
+
+    async function fetchContributors() {
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error("Failed to fetch contributors");
+            }
+            const contributors = await response.json();
+            displayContributors(contributors);
+        } catch (error) {
+            console.error(error);
+            document.getElementById('contributors').innerText = 'Unable to load contributors.';
+        }
+    }
+
+    function displayContributors(contributors) {
+        const container = document.getElementById('contributors');
+        contributors.forEach(contributor => {
+            const contributorElement = document.createElement('div');
+            contributorElement.className = 'contributor';
+
+            contributorElement.innerHTML = `
+                <img src="${contributor.avatar_url}" alt="${contributor.login}">
+                <div class="contributor-name">
+                    <a href="${contributor.html_url}" target="_blank">${contributor.login}</a>
+                </div>
+            `;
+
+            container.appendChild(contributorElement);
+        });
+    }
+
+    fetchContributors();
+</script>
+
+</body>
+</html>
